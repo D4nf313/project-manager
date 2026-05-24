@@ -1,0 +1,147 @@
+@use '../../../styles/variables' as v;
+@use '../../../styles/mixins' as m;
+
+// ── Overlay y box vienen de styles.scss ──────────────────────
+// Solo ajustes específicos del modal de proyecto
+
+.modal-header {
+  @include m.flex-start;
+  gap: v.$spacing-md;
+  padding: v.$spacing-lg v.$spacing-xl;
+  border-bottom: 1px solid v.$sc-border;
+  position: relative;
+
+  &__icon {
+    @include m.flex-center;
+    width: 40px;
+    height: 40px;
+    background: v.$sc-navy;
+    border-radius: v.$radius-md;
+    color: v.$sc-orange;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: v.$font-size-md;
+    font-weight: 700;
+    color: v.$sc-text;
+    line-height: 1.2;
+  }
+
+  &__sub {
+    font-size: v.$font-size-xs;
+    color: v.$sc-muted;
+    margin-top: 2px;
+  }
+
+  &__close {
+    @include m.flex-center;
+    position: absolute;
+    right: v.$spacing-lg;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: 1px solid v.$sc-border;
+    border-radius: v.$radius-sm;
+    color: v.$sc-muted;
+    cursor: pointer;
+    transition: background v.$transition-fast, color v.$transition-fast;
+
+    &:hover {
+      background: v.$sc-bg;
+      color: v.$sc-text;
+    }
+  }
+}
+
+.modal-body {
+  padding: v.$spacing-lg v.$spacing-xl v.$spacing-xl;
+}
+
+// ── Alert ─────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-sm v.$spacing-md;
+  border-radius: v.$radius-md;
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+  margin-bottom: v.$spacing-md;
+
+  &--error {
+    background: v.$sc-danger-bg;
+    color: v.$sc-danger;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+  }
+}
+
+// ── Fields ────────────────────────────────────────────────────
+.field {
+  margin-bottom: v.$spacing-md;
+
+  &__header {
+    @include m.flex-between;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  &__label {
+    font-size: v.$font-size-xs;
+    font-weight: 600;
+    color: v.$sc-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__counter {
+    font-size: v.$font-size-xs;
+    color: v.$sc-muted-light;
+
+    &--warn { color: v.$sc-danger; }
+  }
+
+  &__input {
+    @include m.input-base;
+  }
+
+  &__textarea {
+    @include m.input-base;
+    height: auto;
+    padding: v.$spacing-sm v.$spacing-md;
+    resize: vertical;
+    min-height: 96px;
+    line-height: 1.5;
+  }
+
+  &__error {
+    display: block;
+    margin-top: v.$spacing-xs;
+    font-size: v.$font-size-xs;
+    color: v.$sc-danger;
+  }
+}
+
+// ── Acciones ──────────────────────────────────────────────────
+.modal-actions {
+  @include m.flex-between;
+  gap: v.$spacing-sm;
+  margin-top: v.$spacing-lg;
+}
+
+.btn-cancel {
+  @include m.btn-ghost;
+  flex: 1;
+}
+
+.btn-submit {
+  @include m.btn-orange;
+  flex: 2;
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+}

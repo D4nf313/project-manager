@@ -1,0 +1,159 @@
+@use 'variables' as v;
+
+// ── Flexbox helpers ───────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+// ── Botones ──────────────────────────────────────────────────
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$spacing-sm;
+  height: 40px;
+  padding: 0 v.$spacing-lg;
+  border: none;
+  border-radius: v.$radius-md;
+  font-family: v.$font-sans;
+  font-size: v.$font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background v.$transition-fast, transform v.$transition-fast, box-shadow v.$transition-fast;
+  white-space: nowrap;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  background: v.$sc-navy;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: v.$sc-navy-light;
+    box-shadow: v.$shadow-sm;
+  }
+}
+
+@mixin btn-orange {
+  @include btn-base;
+  background: v.$sc-orange;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: v.$sc-orange-dark;
+    box-shadow: v.$shadow-sm;
+  }
+}
+
+@mixin btn-ghost {
+  @include btn-base;
+  background: transparent;
+  color: v.$sc-muted;
+  border: 1px solid v.$sc-border;
+
+  &:hover:not(:disabled) {
+    background: v.$sc-bg;
+    color: v.$sc-text;
+  }
+}
+
+// ── Cards ────────────────────────────────────────────────────
+@mixin card {
+  background: v.$sc-card;
+  border: 1px solid v.$sc-border;
+  border-radius: v.$radius-lg;
+  box-shadow: v.$shadow-sm;
+}
+
+// ── Inputs ───────────────────────────────────────────────────
+@mixin input-base {
+  width: 100%;
+  height: 42px;
+  padding: 0 v.$spacing-md;
+  border: 1px solid v.$sc-border;
+  border-radius: v.$radius-md;
+  font-family: v.$font-sans;
+  font-size: v.$font-size-base;
+  color: v.$sc-text;
+  background: v.$sc-bg;
+  outline: none;
+  transition: border-color v.$transition-fast, box-shadow v.$transition-fast;
+
+  &::placeholder {
+    color: v.$sc-muted-light;
+  }
+
+  &:focus {
+    border-color: v.$sc-orange;
+    box-shadow: 0 0 0 3px rgba(244, 160, 32, 0.15);
+    background: #fff;
+  }
+
+  &.error {
+    border-color: v.$sc-danger;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10);
+  }
+}
+
+// ── Badge ────────────────────────────────────────────────────
+@mixin badge($bg, $color) {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: v.$radius-full;
+  font-size: v.$font-size-xs;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: $bg;
+  color: $color;
+}
+
+// ── Page layout ──────────────────────────────────────────────
+@mixin page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: v.$spacing-xl v.$spacing-lg;
+}
+
+// ── Animaciones ──────────────────────────────────────────────
+@mixin fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@mixin slide-up {
+  animation: slideUp 0.35s ease forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

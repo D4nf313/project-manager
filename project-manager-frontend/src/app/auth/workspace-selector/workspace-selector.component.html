@@ -1,0 +1,141 @@
+<div class="ws-page">
+  <!-- Navbar mínima -->
+  <nav class="ws-navbar">
+    <div class="ws-navbar__brand">
+      <div class="ws-navbar__logo"><span>PM</span></div>
+      <span class="ws-navbar__name">Project Manager</span>
+    </div>
+    <button class="ws-navbar__back" (click)="goBack()">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </svg>
+      Salir
+    </button>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="ws-content">
+    <div class="ws-header">
+      <h1 class="ws-header__title">Selecciona un workspace</h1>
+      <p class="ws-header__subtitle">
+        Elige el espacio de trabajo al que deseas acceder. Tu rol puede variar
+        en cada workspace.
+      </p>
+    </div>
+
+    <!-- Error -->
+    @if (errorMsg()) {
+      <div class="alert alert--error" role="alert">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        {{ errorMsg() }}
+      </div>
+    }
+
+    <!-- Lista de workspaces -->
+    <div class="ws-list" role="listbox" aria-label="Workspaces disponibles">
+      @for (ws of workspaces(); track ws.id) {
+        <div
+          class="ws-card"
+          [class.ws-card--selected]="isSelected(ws)"
+          role="option"
+          [attr.aria-selected]="isSelected(ws)"
+          (click)="selectWorkspace(ws)"
+          (keydown.enter)="selectWorkspace(ws)"
+          (keydown.space)="selectWorkspace(ws)"
+          tabindex="0"
+        >
+          <!-- Ícono del workspace -->
+          <div
+            class="ws-card__icon"
+            [class]="'ws-card__icon--' + ws.role.toLowerCase()"
+          >
+            {{ workspaceInitial(ws.name) }}
+          </div>
+
+          <!-- Info -->
+          <div class="ws-card__info">
+            <h2 class="ws-card__name">{{ ws.name }}</h2>
+            <p class="ws-card__role-desc">{{ roleLabel(ws.role) }}</p>
+          </div>
+
+          <!-- Badge de rol -->
+          <span
+            [class]="roleBadgeClass(ws.role)"
+            [attr.aria-label]="'Rol: ' + ws.role"
+          >
+            {{ ws.role }}
+          </span>
+
+          <!-- Indicador de selección -->
+          @if (isSelected(ws)) {
+            <div class="ws-card__check" aria-hidden="true">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Botón confirmar -->
+    <div class="ws-actions">
+      <button
+        class="btn-confirm"
+        [disabled]="!selected() || loading()"
+        (click)="confirm()"
+      >
+        @if (loading()) {
+          <span class="spinner" aria-hidden="true"></span>
+          Ingresando...
+        } @else {
+          Entrar al workspace
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            aria-hidden="true"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        }
+      </button>
+
+      @if (!selected()) {
+        <p class="ws-actions__hint">Selecciona un workspace para continuar</p>
+      }
+    </div>
+  </main>
+</div>

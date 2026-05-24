@@ -1,0 +1,152 @@
+@use '../../../styles/variables' as v;
+@use '../../../styles/mixins' as m;
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #EEF2FA 0%, #F8FAFC 60%, #FFF8EE 100%);
+  padding: v.$spacing-lg;
+}
+
+// ── Card ──────────────────────────────────────────────────────
+.login-card {
+  @include m.card;
+  width: 100%;
+  max-width: 420px;
+  padding: v.$spacing-xl v.$spacing-xl v.$spacing-lg;
+  @include m.slide-up;
+}
+
+// ── Header ────────────────────────────────────────────────────
+.login-header {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-md;
+  margin-bottom: v.$spacing-xl;
+}
+
+.login-logo {
+  @include m.flex-center;
+  width: 48px;
+  height: 48px;
+  background: v.$sc-navy;
+  border-radius: v.$radius-lg;
+  flex-shrink: 0;
+
+  span {
+    color: v.$sc-orange;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+}
+
+.login-title {
+  font-size: v.$font-size-md;
+  font-weight: 700;
+  color: v.$sc-text;
+  line-height: 1.2;
+}
+
+.login-subtitle {
+  font-size: v.$font-size-sm;
+  color: v.$sc-muted;
+  margin-top: 2px;
+}
+
+// ── Alert ─────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-sm v.$spacing-md;
+  border-radius: v.$radius-md;
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+  margin-bottom: v.$spacing-md;
+
+  &--error {
+    background: v.$sc-danger-bg;
+    color: v.$sc-danger;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+  }
+
+  svg { flex-shrink: 0; margin-top: 1px; }
+}
+
+// ── Fields ────────────────────────────────────────────────────
+.field {
+  margin-bottom: v.$spacing-md;
+
+  &__label {
+    display: block;
+    font-size: v.$font-size-xs;
+    font-weight: 600;
+    color: v.$sc-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  &__input-wrap {
+    position: relative;
+  }
+
+  &__input {
+    @include m.input-base;
+
+    .field__input-wrap & {
+      padding-right: 44px;
+    }
+  }
+
+  &__toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: v.$sc-muted;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: v.$radius-sm;
+    transition: color v.$transition-fast;
+
+    &:hover { color: v.$sc-text; }
+  }
+
+  &__error {
+    display: block;
+    margin-top: v.$spacing-xs;
+    font-size: v.$font-size-xs;
+    color: v.$sc-danger;
+  }
+}
+
+// ── Botón submit ──────────────────────────────────────────────
+.btn-submit {
+  @include m.btn-primary;
+  width: 100%;
+  height: 44px;
+  margin-top: v.$spacing-sm;
+  font-size: v.$font-size-base;
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+  }
+}
+
+// ── Footer ────────────────────────────────────────────────────
+.login-footer {
+  margin-top: v.$spacing-lg;
+  font-size: v.$font-size-xs;
+  color: v.$sc-muted-light;
+}

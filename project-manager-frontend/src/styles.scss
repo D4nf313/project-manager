@@ -1,0 +1,104 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+/* ── Reset ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: v.$font-sans;
+  font-size: v.$font-size-base;
+  color: v.$sc-text;
+  background: v.$sc-bg;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: v.$font-sans; }
+input, textarea, select { font-family: v.$font-sans; }
+
+/* ── Scrollbar personalizado ────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: v.$sc-border; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: v.$sc-muted-light; }
+
+/* ── Utility classes ─────────────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ── Spinner global ──────────────────────────────────────────── */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+.spinner.dark {
+  border-color: v.$sc-border;
+  border-top-color: v.$sc-navy;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Toast / error messages ──────────────────────────────────── */
+.alert {
+  padding: v.$spacing-sm v.$spacing-md;
+  border-radius: v.$radius-md;
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+
+  &--error {
+    background: v.$sc-danger-bg;
+    color: v.$sc-danger;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+  }
+
+  &--success {
+    background: v.$sc-success-bg;
+    color: v.$sc-success;
+    border: 1px solid rgba(22, 163, 74, 0.2);
+  }
+}
+
+/* ── Modal overlay ───────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: v.$spacing-md;
+  animation: fadeOverlay 0.2s ease;
+}
+
+@keyframes fadeOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: v.$sc-card;
+  border-radius: v.$radius-xl;
+  box-shadow: v.$shadow-lg;
+  width: 100%;
+  max-width: 480px;
+  animation: slideModal 0.25s ease;
+}
+
+@keyframes slideModal {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}

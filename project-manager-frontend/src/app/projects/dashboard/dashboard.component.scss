@@ -1,0 +1,369 @@
+@use '../../../styles/variables' as v;
+@use '../../../styles/mixins' as m;
+
+.dashboard {
+  min-height: 100vh;
+  background: v.$sc-bg;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Navbar ────────────────────────────────────────────────────
+.navbar {
+  @include m.flex-between;
+  height: v.$navbar-height;
+  background: v.$sc-navy;
+  padding: 0 v.$spacing-md;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  @media (min-width: 768px) {
+    padding: 0 v.$spacing-xl;
+  }
+
+  &__brand {
+    @include m.flex-start;
+    gap: v.$spacing-sm;
+    min-width: 0;
+  }
+
+  &__logo {
+    @include m.flex-center;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    background: v.$sc-orange;
+    border-radius: v.$radius-md;
+
+    span {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+  }
+
+  &__app {
+    color: #fff;
+    font-size: v.$font-size-xs;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (min-width: 576px) {
+      font-size: v.$font-size-base;
+    }
+  }
+
+  &__ws {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: v.$font-size-xs;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__actions {
+    @include m.flex-start;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  &__ws-btn {
+    @include m.flex-start;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 5px 8px;
+    border-radius: v.$radius-md;
+    font-size: v.$font-size-xs;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background v.$transition-fast;
+
+    span {
+      display: none;
+
+      @media (min-width: 576px) {
+        display: inline;
+      }
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+  }
+
+&__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: v.$sc-orange;
+  color: #fff;
+  font-size: v.$font-size-xs;
+  font-weight: 700;
+  cursor: default;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+  &__logout {
+    @include m.flex-center;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: v.$radius-md;
+    color: rgba(255, 255, 255, 0.65);
+    cursor: pointer;
+    transition: background v.$transition-fast, color v.$transition-fast;
+
+    &:hover {
+      background: rgba(220, 38, 38, 0.25);
+      color: #fff;
+    }
+  }
+}
+
+// ── Badges de rol ─────────────────────────────────────────────
+.role-badge {
+  padding: 3px 8px;
+  border-radius: v.$radius-full;
+  font-size: v.$font-size-xs;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+
+  &--admin  { background: #FEF3C7; color: #92400E; }
+  &--editor { background: #ECFDF5; color: #065F46; }
+  &--lector { background: #EFF6FF; color: #1E40AF; }
+}
+
+// ── Contenido ─────────────────────────────────────────────────
+.dashboard__content {
+  flex: 1;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: v.$spacing-lg v.$spacing-md;
+
+  @media (min-width: 768px) {
+    padding: v.$spacing-xl v.$spacing-lg;
+  }
+}
+
+
+// ── Page header ───────────────────────────────────────────────
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  margin-bottom: v.$spacing-lg;
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: v.$font-size-lg;
+    font-weight: 700;
+    color: v.$sc-text;
+    margin-bottom: 2px;
+  }
+
+  &__sub {
+    font-size: v.$font-size-sm;
+    color: v.$sc-muted;
+  }
+}
+
+// ── Botón crear ───────────────────────────────────────────────
+.btn-create {
+  @include m.btn-orange;
+  height: 40px;
+  font-size: v.$font-size-sm;
+  width: 100%;
+
+  @media (min-width: 576px) {
+    width: auto;
+  }
+}
+
+// ── Alert ─────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-sm v.$spacing-md;
+  border-radius: v.$radius-md;
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+  margin-bottom: v.$spacing-lg;
+
+  &--error {
+    background: v.$sc-danger-bg;
+    color: v.$sc-danger;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+  }
+
+  &__retry {
+    margin-left: auto;
+    background: none;
+    border: 1px solid currentColor;
+    color: inherit;
+    padding: 2px 10px;
+    border-radius: v.$radius-sm;
+    font-size: v.$font-size-xs;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0.8;
+
+    &:hover { opacity: 1; }
+  }
+}
+
+// ── Grid de proyectos ─────────────────────────────────────────
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: v.$spacing-md;
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// ── Project card ──────────────────────────────────────────────
+.project-card {
+  @include m.card;
+  padding: v.$spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-xs;
+  transition: transform v.$transition-fast, box-shadow v.$transition-fast;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: v.$shadow-md;
+  }
+
+  &__header {
+    @include m.flex-between;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: v.$sc-orange;
+  }
+
+  &__date {
+    font-size: v.$font-size-xs;
+    color: v.$sc-muted-light;
+  }
+
+  &__name {
+    font-size: v.$font-size-base;
+    font-weight: 700;
+    color: v.$sc-text;
+    line-height: 1.3;
+  }
+
+  &__desc {
+    font-size: v.$font-size-sm;
+    color: v.$sc-muted;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  &__footer {
+    margin-top: v.$spacing-sm;
+    padding-top: v.$spacing-sm;
+    border-top: 1px solid v.$sc-border;
+  }
+
+  &__ws-tag {
+    @include m.flex-start;
+    gap: 4px;
+    display: inline-flex;
+    font-size: v.$font-size-xs;
+    color: v.$sc-muted;
+    background: v.$sc-bg;
+    border: 1px solid v.$sc-border;
+    padding: 3px 8px;
+    border-radius: v.$radius-sm;
+  }
+}
+
+// ── Skeleton loader ───────────────────────────────────────────
+.skeleton-card {
+  @include m.card;
+  padding: v.$spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, v.$sc-border 25%, #F1F5F9 50%, v.$sc-border 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: v.$radius-sm;
+
+  &--title  { height: 18px; width: 65%; }
+  &--text   { height: 14px; width: 90%; }
+  &--short  { width: 55%; }
+  &--badge  { height: 22px; width: 30%; border-radius: v.$radius-full; margin-top: v.$spacing-sm; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// ── Estado vacío ──────────────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: v.$spacing-2xl v.$spacing-lg;
+
+  &__icon {
+    @include m.flex-center;
+    width: 72px;
+    height: 72px;
+    background: v.$sc-border;
+    border-radius: v.$radius-xl;
+    margin: 0 auto v.$spacing-lg;
+    color: v.$sc-muted;
+  }
+
+  &__title {
+    font-size: v.$font-size-md;
+    font-weight: 700;
+    color: v.$sc-text;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  &__sub {
+    font-size: v.$font-size-sm;
+    color: v.$sc-muted;
+    margin-bottom: v.$spacing-lg;
+  }
+}

@@ -1,0 +1,238 @@
+@use '../../../styles/variables' as v;
+@use '../../../styles/mixins' as m;
+
+.ws-page {
+  min-height: 100vh;
+  background: v.$sc-bg;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Navbar ────────────────────────────────────────────────────
+.ws-navbar {
+  @include m.flex-between;
+  height: v.$navbar-height;
+  background: v.$sc-navy;
+  padding: 0 v.$spacing-xl;
+
+  &__brand {
+    @include m.flex-start;
+    gap: v.$spacing-sm;
+  }
+
+  &__logo {
+    @include m.flex-center;
+    width: 36px;
+    height: 36px;
+    background: v.$sc-orange;
+    border-radius: v.$radius-md;
+
+    span {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+    }
+  }
+
+  &__name {
+    color: #fff;
+    font-size: v.$font-size-base;
+    font-weight: 600;
+  }
+
+  &__back {
+    @include m.flex-start;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 6px 14px;
+    border-radius: v.$radius-md;
+    font-size: v.$font-size-sm;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background v.$transition-fast, color v.$transition-fast;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+  }
+}
+
+// ── Contenido ─────────────────────────────────────────────────
+.ws-content {
+  flex: 1;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: v.$spacing-2xl v.$spacing-lg;
+  @include m.fade-in;
+}
+
+// ── Header ────────────────────────────────────────────────────
+.ws-header {
+  margin-bottom: v.$spacing-xl;
+
+  &__title {
+    font-size: v.$font-size-lg;
+    font-weight: 700;
+    color: v.$sc-text;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  &__subtitle {
+    font-size: v.$font-size-sm;
+    color: v.$sc-muted;
+    line-height: 1.5;
+  }
+}
+
+// ── Alert ─────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-sm v.$spacing-md;
+  border-radius: v.$radius-md;
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+  margin-bottom: v.$spacing-md;
+
+  &--error {
+    background: v.$sc-danger-bg;
+    color: v.$sc-danger;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+  }
+}
+
+// ── Lista ─────────────────────────────────────────────────────
+.ws-list {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  margin-bottom: v.$spacing-xl;
+}
+
+// ── Card de workspace ─────────────────────────────────────────
+.ws-card {
+  @include m.card;
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-md;
+  padding: v.$spacing-md v.$spacing-lg;
+  cursor: pointer;
+  transition: border-color v.$transition-fast, box-shadow v.$transition-fast, transform v.$transition-fast;
+  position: relative;
+  outline: none;
+
+  &:hover {
+    border-color: v.$sc-orange;
+    box-shadow: v.$shadow-md;
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(244, 160, 32, 0.3);
+    border-color: v.$sc-orange;
+  }
+
+  &--selected {
+    border-color: v.$sc-orange;
+    background: #FFFCF5;
+    box-shadow: 0 0 0 2px rgba(244, 160, 32, 0.2);
+  }
+
+  &__icon {
+    @include m.flex-center;
+    width: 44px;
+    height: 44px;
+    border-radius: v.$radius-md;
+    font-size: v.$font-size-md;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+
+    &--admin  { background: v.$sc-navy; }
+    &--editor { background: v.$sc-blue; }
+    &--lector { background: v.$sc-muted; }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: v.$font-size-base;
+    font-weight: 600;
+    color: v.$sc-text;
+    margin-bottom: 2px;
+  }
+
+  &__role-desc {
+    font-size: v.$font-size-xs;
+    color: v.$sc-muted;
+  }
+
+  &__check {
+    @include m.flex-center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: v.$sc-orange;
+    color: #fff;
+    flex-shrink: 0;
+  }
+}
+
+// ── Badges de rol ─────────────────────────────────────────────
+.badge {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: v.$radius-full;
+  font-size: v.$font-size-xs;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+
+  &--admin  {
+    background: #FEF3C7;
+    color: #92400E;
+  }
+
+  &--editor {
+    background: v.$sc-success-bg;
+    color: darken(#16A34A, 10%);
+  }
+
+  &--lector {
+    background: v.$sc-blue-light;
+    color: #1E40AF;
+  }
+}
+
+// ── Acciones ──────────────────────────────────────────────────
+.ws-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: v.$spacing-sm;
+
+  &__hint {
+    font-size: v.$font-size-xs;
+    color: v.$sc-muted-light;
+  }
+}
+
+.btn-confirm {
+  @include m.btn-primary;
+  height: 44px;
+  font-size: v.$font-size-base;
+  min-width: 220px;
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+  }
+}

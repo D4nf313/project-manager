@@ -1,0 +1,154 @@
+<div class="dashboard">
+
+  <!-- ── Navbar ─────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="navbar__brand">
+      <div class="navbar__logo"><span>PM</span></div>
+      <div>
+        <p class="navbar__app">Project Manager</p>
+        <p class="navbar__ws">{{ workspaceName() }}</p>
+      </div>
+    </div>
+
+    <div class="navbar__actions">
+      @if (session()) {
+        <span [class]="roleBadgeClass(session()!.role)">
+          {{ session()!.role }}
+        </span>
+      }
+      <button class="navbar__ws-btn" (click)="changeWorkspace()" title="Cambiar workspace">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+        <span>Workspace</span>
+      </button>
+      <div class="navbar__avatar" [title]="userName()">
+        {{ initials() }}
+      </div>
+      <button class="navbar__logout" (click)="logout()" title="Cerrar sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Contenido principal ────────────────────────────────── -->
+  <main class="dashboard__content">
+
+    <!-- Cabecera de página -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-header__title">Proyectos</h1>
+        <p class="page-header__sub">
+          @if (loading()) {
+            Cargando...
+          } @else {
+            {{ projects().length }} proyecto{{ projects().length !== 1 ? 's' : '' }} en {{ workspaceName() }}
+          }
+        </p>
+      </div>
+
+      <!-- Botón "Crear Proyecto" solo para ADMIN y EDITOR -->
+      @if (canCreate()) {
+        <button class="btn-create" (click)="openCreateModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Crear Proyecto
+        </button>
+      }
+    </div>
+
+    <!-- Error -->
+    @if (errorMsg()) {
+      <div class="alert alert--error" role="alert">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        {{ errorMsg() }}
+        <button class="alert__retry" (click)="loadProjects()">Reintentar</button>
+      </div>
+    }
+
+    <!-- Skeleton loader -->
+    @if (loading()) {
+      <div class="projects-grid">
+        @for (i of [1,2,3,4]; track i) {
+          <div class="skeleton-card">
+            <div class="skeleton skeleton--title"></div>
+            <div class="skeleton skeleton--text"></div>
+            <div class="skeleton skeleton--text skeleton--short"></div>
+            <div class="skeleton skeleton--badge"></div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Lista de proyectos -->
+    @if (!loading() && !errorMsg()) {
+      @if (projects().length === 0) {
+        <!-- Estado vacío -->
+        <div class="empty-state">
+          <div class="empty-state__icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h2 class="empty-state__title">No hay proyectos todavía</h2>
+          <p class="empty-state__sub">
+            @if (canCreate()) {
+              Crea el primer proyecto de este workspace.
+            } @else {
+              Aún no hay proyectos en este workspace.
+            }
+          </p>
+          @if (canCreate()) {
+            <button class="btn-create" (click)="openCreateModal()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Crear primer proyecto
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="projects-grid">
+          @for (project of projects(); track project.id) {
+            <article class="project-card">
+              <div class="project-card__header">
+                <div class="project-card__dot" aria-hidden="true"></div>
+                <time class="project-card__date" [dateTime]="project.createdAt">
+                  {{ formatDate(project.createdAt) }}
+                </time>
+              </div>
+              <h2 class="project-card__name">{{ project.name }}</h2>
+              <p class="project-card__desc">{{ project.description }}</p>
+              <footer class="project-card__footer">
+                <span class="project-card__ws-tag">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  </svg>
+                  {{ project.workspaceName }}
+                </span>
+              </footer>
+            </article>
+          }
+        </div>
+      }
+    }
+
+  </main>
+
+</div>
+
+<!-- ── Modal de creación de proyecto ──────────────────────────── -->
+@if (showModal()) {
+  <app-create-project
+    (created)="onProjectCreated($event)"
+    (cancelled)="closeModal()"
+  />
+}
