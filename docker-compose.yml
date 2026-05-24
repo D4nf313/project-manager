@@ -1,0 +1,58 @@
+services:
+
+  # ── Base de datos MySQL ──────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: pm-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpassword"
+      MYSQL_DATABASE: project_manager
+    ports:
+      - "3307:3306"       # 3307 en host para no chocar con MySQL local
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p1395"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ── Backend Spring Boot ──────────────────────────────────────
+  backend:
+    build:
+      context: ./project-manager-backend
+      dockerfile: Dockerfile
+    container_name: pm-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/project_manager?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "rootpassword"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      SPRING_SQL_INIT_MODE: always
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+      JWT_SECRET: mi-clave-secreta-super-segura-de-32-caracteres-minimo
+      JWT_EXPIRATION: "86400000"
+      SERVER_PORT: "8080"
+    ports:
+      - "8080:8080"
+
+  # ── Frontend Angular ─────────────────────────────────────────
+  frontend:
+    build:
+      context: ./project-manager-frontend
+      dockerfile: Dockerfile
+    container_name: pm-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"         # Angular en localhost:4200 igual que en dev
+
+volumes:
+  mysql_data:

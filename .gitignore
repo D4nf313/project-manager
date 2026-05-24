@@ -1,0 +1,12 @@
+# Backend
+project-manager-backend/target/
+project-manager-backend/.mvn/
+
+# Frontend
+project-manager-frontend/node_modules/
+project-manager-frontend/dist/
+project-manager-frontend/.angular/
+
+# General
+.DS_Store
+*.log

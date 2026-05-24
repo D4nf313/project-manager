@@ -1,0 +1,144 @@
+{
+  "info": {
+    "name": "SaaS Project Manager",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "temp_token",
+      "value": ""
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{base_url}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"carlos@test.com\",\n  \"password\": \"password123\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.collectionVariables.set('temp_token', res.tempToken);",
+              "console.log('tempToken guardado:', res.tempToken);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Seleccionar Workspace Alfa (ADMIN)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{temp_token}}" }
+        ],
+        "url": "{{base_url}}/api/auth/token",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"workspaceId\": \"22222222-2222-2222-2222-222222222222\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.collectionVariables.set('access_token', res.token);",
+              "console.log('Role:', res.role);",
+              "console.log('accessToken guardado:', res.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2b. Seleccionar Workspace Beta (LECTOR)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{temp_token}}" }
+        ],
+        "url": "{{base_url}}/api/auth/token",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"workspaceId\": \"33333333-3333-3333-3333-333333333333\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.collectionVariables.set('access_token', res.token);",
+              "console.log('Role:', res.role);",
+              "console.log('accessToken guardado:', res.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. GET Proyectos",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "url": "{{base_url}}/api/projects"
+      }
+    },
+    {
+      "name": "4. POST Crear Proyecto (requiere ADMIN o EDITOR)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "url": "{{base_url}}/api/projects",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Nuevo proyecto de prueba\",\n  \"description\": \"Descripción del proyecto\"\n}"
+        }
+      }
+    },
+    {
+      "name": "5. POST Crear Proyecto como LECTOR (debe dar 403)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "url": "{{base_url}}/api/projects",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Proyecto que no debería crearse\",\n  \"description\": \"Este request debe retornar 403\"\n}"
+        }
+      }
+    }
+  ]
+}
