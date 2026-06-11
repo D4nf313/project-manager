@@ -35,13 +35,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/error").permitAll()          // ← agrega esta línea
+                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/assets/**").permitAll()  // ← AGREGA ESTO
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()  // cambia esto temporalmente
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/auth/token").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/projects").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/projects").authenticated()
@@ -54,6 +55,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
