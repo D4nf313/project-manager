@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project, CreateProjectRequest } from '../core/models/models';
+import { environment } from '../../environments/environment';
 
-const API = 'http://localhost:8080/api';
+const API = `${environment.apiUrl}/api`;
+
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {

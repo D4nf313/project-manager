@@ -10,7 +10,9 @@ import {
   WorkspaceInfo,
 } from '../core/models/models';
 
-const API = 'http://localhost:8080/api';
+import { environment } from '../../environments/environment';
+
+const API = `${environment.apiUrl}/api`;
 const SESSION_KEY = 'pm_session';
 const TEMP_KEY = 'pm_temp';
 
