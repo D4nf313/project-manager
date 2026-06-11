@@ -14,6 +14,6 @@ RUN npm run build --prod
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=backend-build /app/backend/target/*.jar app.jar
-COPY --from=frontend-build /app/frontend/dist/ /app/static/
+COPY --from=frontend-build /app/frontend/dist/project-manager-frontend/ /app/static/
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
