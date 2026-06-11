@@ -35,7 +35,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/assets/**").permitAll()  // ← AGREGA ESTO
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/*.js",
+                                "/*.css",
+                                "/*.txt",
+                                "/assets/**",
+                                "/favicon.ico"
+                        ).permitAll()  // ← Permite todos los archivos estáticos
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
